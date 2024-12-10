@@ -3,7 +3,7 @@ package daytwo
 import "log"
 
 func Solve2() {
-	dataInput := readInputFile("./daytwo/test.txt")
+	dataInput := readInputFile("./daytwo/input.txt")
 	safeReports := 0
 	for _, v := range dataInput {
 		if checkIfValid(v, -1) {
@@ -17,9 +17,9 @@ func checkIfValid(list []int, index int) bool {
 	if index == len(list) {
 		return false
 	}
-	newList := list
+	newList := cloneList(list)
 	if index > -1 {
-		newList = removeElementFromList(list, index)
+		newList = removeElementFromList(newList, index)
 	}
 	if len(newList) == 0 {
 		return false
@@ -33,5 +33,14 @@ func checkIfValid(list []int, index int) bool {
 }
 
 func removeElementFromList(list []int, index int) []int {
-	return append(list[:index], list[index+1:]...)
+	firstHalf := list[:index]
+	secondHalf := list[index+1:]
+	finalList := append(firstHalf, secondHalf...)
+	return finalList
+}
+
+func cloneList(list []int) []int {
+	newList := make([]int, len(list))
+	copy(newList, list)
+	return newList
 }
