@@ -16,7 +16,6 @@ func Solve() {
 		vals := values[i]
 		result := findSum(res, vals)
 		if result == 0 {
-			log.Println(result)
 			counter += int64(res)
 		}
 	}
