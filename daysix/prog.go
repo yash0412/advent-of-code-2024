@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 )
 
 func Solve() {
+	startTime := time.Now()
 	inputMaze := readInputFile("./daysix/input.txt")
 	caratPos := []int{0, 0}
 	obstaclePos := make(map[string]struct{})
@@ -31,7 +33,6 @@ func Solve() {
 		if moveCaratAndCountSteps(caratPos, dx, dy, mazeLength, mazeWidth, movesMap, obstaclePos) {
 			break
 		}
-
 		counterDx, counterDy = (counterDx + 1), (counterDy + 1)
 		if counterDx%2 == 0 {
 			dx = 0
@@ -49,13 +50,14 @@ func Solve() {
 		}
 	}
 	log.Println("Total Steps: ", len(movesMap))
+	log.Println("Time Taken: ", time.Since(startTime))
 }
 
 func moveCaratAndCountSteps(caratPos []int, dx, dy, mazeLength, mazeWidth int, movesMap, obstaclePos map[string]struct{}) bool {
 	for {
 		x, y := caratPos[0], caratPos[1]
 		nextX, nextY := x+dx, y+dy
-		if nextX == mazeLength || nextY == mazeWidth {
+		if nextX >= mazeLength || nextX < 0 || nextY >= mazeWidth || nextY < 0 {
 			return true
 		}
 		if _, found := obstaclePos[coordsToString(nextX, nextY)]; found {

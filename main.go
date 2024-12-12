@@ -19,4 +19,5 @@ func main() {
 	dayfour.Solve2()
 	dayfive.Solve()
 	daysix.Solve()
+	daysix.Solve2()
 }
