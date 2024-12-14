@@ -1,6 +1,7 @@
 package dayfour
 
 import (
+	"adventofcode/utils"
 	"bufio"
 	"log"
 	"os"
@@ -35,7 +36,7 @@ func findMAS(x int, y int, input [][]rune) int {
 }
 
 func findAS(x int, y int, dx int, dy int, input [][]rune) bool {
-	if !areCoordinatesValid(x+dx, y+dy, input) {
+	if !utils.IsCoordinatesValid(x+dx, y+dy, len(input), len(input[0])) {
 		return false
 	}
 	char := input[x+dx][y+dy]
@@ -46,7 +47,7 @@ func findAS(x int, y int, dx int, dy int, input [][]rune) bool {
 }
 
 func findS(x int, y int, input [][]rune) bool {
-	if !areCoordinatesValid(x, y, input) {
+	if !utils.IsCoordinatesValid(x, y, len(input), len(input[0])) {
 		return false
 	}
 	char := input[x][y]
@@ -61,20 +62,11 @@ func getOperations(x int, y int, input [][]rune) [][]int {
 		{x + 1, y - 1}, {x + 1, y}, {x + 1, y + 1},
 	}
 	for _, v := range possibleOps {
-		if areCoordinatesValid(v[0], v[1], input) {
+		if utils.IsCoordinatesValid(v[0], v[1], len(input), len(input[0])) {
 			ops = append(ops, v)
 		}
 	}
 	return ops
-}
-
-func areCoordinatesValid(x int, y int, input [][]rune) bool {
-	xsize := len(input)
-	if x < 0 || x >= xsize {
-		return false
-	}
-	ysize := len(input[x])
-	return y >= 0 && y < ysize
 }
 
 func readInputFile(fileName string) [][]rune {

@@ -1,9 +1,9 @@
 package daythree
 
 import (
+	"adventofcode/utils"
 	"log"
 	"regexp"
-	"strconv"
 )
 
 func Solve2() {
@@ -22,8 +22,8 @@ func Solve2() {
 		} else if isEnabled {
 			regexNum := regexp.MustCompile(`\d{1,3}`)
 			nums := regexNum.FindAllString(match, -1)
-			i, _ := strconv.Atoi(nums[0])
-			j, _ := strconv.Atoi(nums[1])
+			i := utils.StringToInt(nums[0])
+			j := utils.StringToInt(nums[1])
 
 			total += i * j
 		}

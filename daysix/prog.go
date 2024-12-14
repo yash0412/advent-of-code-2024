@@ -1,8 +1,8 @@
 package daysix
 
 import (
+	"adventofcode/utils"
 	"bufio"
-	"fmt"
 	"log"
 	"os"
 	"time"
@@ -17,11 +17,11 @@ func Solve() {
 	for i := range inputMaze {
 		for j := range inputMaze[i] {
 			if inputMaze[i][j] == '#' {
-				obstaclePos[coordsToString(i, j)] = struct{}{}
+				obstaclePos[utils.CoordsToString(i, j)] = struct{}{}
 			}
 			if inputMaze[i][j] == '^' {
 				caratPos[0], caratPos[1] = i, j
-				movesMap[coordsToString(i, j)] = struct{}{}
+				movesMap[utils.CoordsToString(i, j)] = struct{}{}
 			}
 		}
 	}
@@ -60,16 +60,12 @@ func moveCaratAndCountSteps(caratPos []int, dx, dy, mazeLength, mazeWidth int, m
 		if nextX >= mazeLength || nextX < 0 || nextY >= mazeWidth || nextY < 0 {
 			return true
 		}
-		if _, found := obstaclePos[coordsToString(nextX, nextY)]; found {
+		if _, found := obstaclePos[utils.CoordsToString(nextX, nextY)]; found {
 			return false
 		}
-		movesMap[coordsToString(nextX, nextY)] = struct{}{}
+		movesMap[utils.CoordsToString(nextX, nextY)] = struct{}{}
 		caratPos[0], caratPos[1] = nextX, nextY
 	}
-}
-
-func coordsToString(i, j int) string {
-	return fmt.Sprintf("%d,%d", i, j)
 }
 
 func readInputFile(fileName string) [][]rune {

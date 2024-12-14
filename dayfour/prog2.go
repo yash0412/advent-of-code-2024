@@ -1,6 +1,9 @@
 package dayfour
 
-import "log"
+import (
+	"adventofcode/utils"
+	"log"
+)
 
 func Solve2() {
 	input := readInputFile("./dayfour/input.txt")
@@ -47,7 +50,7 @@ func getXOperations(x int, y int, input [][]rune) [][]int {
 		{x + 1, y - 1}, {x + 1, y + 1},
 	}
 	for _, v := range possibleOps {
-		if areCoordinatesValid(v[0], v[1], input) {
+		if utils.IsCoordinatesValid(v[0], v[1], len(input), len(input[0])) {
 			ops = append(ops, v)
 		}
 	}

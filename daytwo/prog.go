@@ -1,10 +1,10 @@
 package daytwo
 
 import (
+	"adventofcode/utils"
 	"bufio"
 	"log"
 	"os"
-	"strconv"
 	"strings"
 )
 
@@ -33,10 +33,7 @@ func readInputFile(fileName string) (dataInput [][]int) {
 		lineSplit := strings.Split(line, " ")
 		var intList []int
 		for _, v := range lineSplit {
-			val, err := strconv.Atoi(v)
-			if err != nil {
-				log.Fatal(err)
-			}
+			val := utils.StringToInt(v)
 			intList = append(intList, val)
 		}
 		dataInput = append(dataInput, intList)

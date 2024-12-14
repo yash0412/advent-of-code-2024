@@ -1,11 +1,11 @@
 package dayfive
 
 import (
+	"adventofcode/utils"
 	"bufio"
 	"log"
 	"os"
 	"sort"
-	"strconv"
 	"strings"
 )
 
@@ -31,11 +31,11 @@ func Solve() {
 	for _, fileStr := range files {
 		fileData := strings.Split(fileStr, ",")
 		if isFileValid(fileData, rulesMap) {
-			intVal, _ := strconv.Atoi(fileData[len(fileData)/2])
+			intVal := utils.StringToInt(fileData[len(fileData)/2])
 			validTotal += intVal
 		} else {
 			validFile := sortInvalidFiles(fileData, rulesMap)
-			intVal, _ := strconv.Atoi(validFile[len(validFile)/2])
+			intVal := utils.StringToInt(validFile[len(validFile)/2])
 			invalidTotal += intVal
 		}
 	}

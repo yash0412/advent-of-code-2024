@@ -1,10 +1,10 @@
 package dayseven
 
 import (
+	"adventofcode/utils"
 	"bufio"
 	"log"
 	"os"
-	"strconv"
 	"strings"
 )
 
@@ -69,15 +69,13 @@ func readInputFile(inputFileName string) (result []int, values [][]int) {
 	for scanner.Scan() {
 		line := scanner.Text()
 		lineSplit := strings.Split(line, ": ")
-		left, err := strconv.Atoi(lineSplit[0])
-		if err != nil {
-			log.Fatal(err)
-		}
+		left := utils.StringToInt(lineSplit[0])
+
 		result = append(result, left)
 		rightSplit := strings.Split(lineSplit[1], " ")
 		rightList := []int{}
 		for i := range rightSplit {
-			x, _ := strconv.Atoi(rightSplit[i])
+			x := utils.StringToInt(rightSplit[i])
 			rightList = append(rightList, x)
 		}
 		values = append(values, rightList)

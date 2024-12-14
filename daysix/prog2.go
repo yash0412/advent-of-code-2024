@@ -1,6 +1,7 @@
 package daysix
 
 import (
+	"adventofcode/utils"
 	"fmt"
 	"log"
 	"time"
@@ -15,7 +16,7 @@ func Solve2() {
 	for i := range inputMaze {
 		for j := range inputMaze[i] {
 			if inputMaze[i][j] == '#' {
-				obstaclePos[coordsToString(i, j)] = struct{}{}
+				obstaclePos[utils.CoordsToString(i, j)] = struct{}{}
 			}
 			if inputMaze[i][j] == '^' {
 				caratPos[0], caratPos[1] = i, j
@@ -29,13 +30,13 @@ func Solve2() {
 			if i == caratPos[0] && j == caratPos[1] {
 				continue
 			}
-			if _, exists := obstaclePos[coordsToString(i, j)]; exists {
+			if _, exists := obstaclePos[utils.CoordsToString(i, j)]; exists {
 				continue
 			}
 			encounteredObstacles := make(map[string]struct{})
-			obstaclePos[coordsToString(i, j)] = struct{}{}
+			obstaclePos[utils.CoordsToString(i, j)] = struct{}{}
 			movesMap := make(map[string]struct{})
-			movesMap[coordsToString(caratPos[0], caratPos[1])] = struct{}{}
+			movesMap[utils.CoordsToString(caratPos[0], caratPos[1])] = struct{}{}
 			counterDx, counterDy := -1, 0
 			dx, dy := -1, 0
 			oldMovesCount := len(movesMap)
@@ -68,7 +69,7 @@ func Solve2() {
 				oldMovesCount = len(movesMap)
 				oldEOCount = len(encounteredObstacles)
 			}
-			delete(obstaclePos, coordsToString(i, j))
+			delete(obstaclePos, utils.CoordsToString(i, j))
 		}
 	}
 	log.Println("Counted: ", counter)
@@ -82,11 +83,11 @@ func moveCaratAndCountStepsAndObs(caratPos []int, dx, dy, mazeLength, mazeWidth 
 		if nextX >= mazeLength || nextX < 0 || nextY >= mazeWidth || nextY < 0 {
 			return true
 		}
-		if _, found := obstaclePos[coordsToString(nextX, nextY)]; found {
-			encounteredObstacles[fmt.Sprintf("%s,%d,%d", coordsToString(nextX, nextY), dx, dy)] = struct{}{}
+		if _, found := obstaclePos[utils.CoordsToString(nextX, nextY)]; found {
+			encounteredObstacles[fmt.Sprintf("%s,%d,%d", utils.CoordsToString(nextX, nextY), dx, dy)] = struct{}{}
 			return false
 		}
-		movesMap[coordsToString(nextX, nextY)] = struct{}{}
+		movesMap[utils.CoordsToString(nextX, nextY)] = struct{}{}
 		caratPos[0], caratPos[1] = nextX, nextY
 	}
 }

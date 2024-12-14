@@ -1,11 +1,11 @@
 package dayone
 
 import (
+	"adventofcode/utils"
 	"bufio"
 	"log"
 	"os"
 	"sort"
-	"strconv"
 	"strings"
 )
 
@@ -39,14 +39,8 @@ func readInputFile() (leftList []int, rightList []int) {
 	for scanner.Scan() {
 		line := scanner.Text()
 		lineSplit := strings.Split(line, "   ")
-		left, err := strconv.Atoi(lineSplit[0])
-		if err != nil {
-			log.Fatal(err)
-		}
-		right, err := strconv.Atoi(lineSplit[1])
-		if err != nil {
-			log.Fatal(err)
-		}
+		left := utils.StringToInt(lineSplit[0])
+		right := utils.StringToInt(lineSplit[1])
 		leftList = append(leftList, left)
 		rightList = append(rightList, right)
 	}

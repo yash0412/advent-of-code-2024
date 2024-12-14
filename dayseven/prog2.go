@@ -1,9 +1,9 @@
 package dayseven
 
 import (
+	"adventofcode/utils"
 	"fmt"
 	"log"
-	"strconv"
 	"strings"
 )
 
@@ -66,7 +66,7 @@ func applyOperations2(op1, op2 int, operator string) (int, bool) {
 	case "||":
 		op1Str := fmt.Sprintf("%d", op1)
 		op2Str := fmt.Sprintf("%d", op2)
-		val, _ := strconv.Atoi(strings.TrimSuffix(op1Str, op2Str))
+		val := utils.StringToInt(strings.TrimSuffix(op1Str, op2Str))
 		return val, strings.HasSuffix(op1Str, op2Str)
 	}
 	return 0, false
