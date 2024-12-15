@@ -20,8 +20,10 @@ func Solve2() {
 			DFS2(visitedMap, sidesMap, input, i, j, &area, &side)
 			// side = 0
 			// countSides(sidesMap, sideVisitedMap, input, i, j, len(input), len(input[i]), &side)
-			areas = append(areas, area)
-			sides = append(sides, side)
+			if area != 0 && side != 0 {
+				areas = append(areas, area)
+				sides = append(sides, side)
+			}
 		}
 	}
 
@@ -54,17 +56,39 @@ func DFS2(visitedMap, sidesMap map[string]bool, input [][]rune, i, j int, area, 
 		char := input[i][j]
 		if utils.IsCoordinatesValid(x, y, len(input), len(input[i])) && input[x][y] == char {
 			DFS2(visitedMap, sidesMap, input, x, y, area, side)
-		} else {
+		} else if utils.IsCoordinatesValid(x, y, len(input), len(input[i])) {
 			sidesMap[getSidesMapKey(i, j, dx, dy)] = true
 			if dx == 0 {
-				topAndBottomElemCoords := [][]int{
-					{i - 1, j}, {i + 1, j},
-				}
 				shouldAddSide := true
-				for _, tbc := range topAndBottomElemCoords {
-					if utils.IsCoordinatesValid(tbc[0], tbc[1], len(input), len(input[i])) &&
-						input[tbc[0]][tbc[1]] == char && sidesMap[getSidesMapKey(tbc[0], tbc[1], dx, dy)] {
-						shouldAddSide = false
+				tbcX, tbcY := i, j
+				for {
+					tbcX = tbcX - 1
+					if utils.IsCoordinatesValid(tbcX, tbcY, len(input), len(input[i])) &&
+						input[tbcX][tbcY] == char {
+						if sidesMap[getSidesMapKey(tbcX, tbcY, dx, dy)] {
+							shouldAddSide = false
+						}
+						if input[tbcX+dx][tbcY+dy] == char {
+							break
+						}
+					} else {
+						break
+					}
+				}
+
+				tbcX, tbcY = i, j
+				for {
+					tbcX = tbcX + 1
+					if utils.IsCoordinatesValid(tbcX, tbcY, len(input), len(input[i])) &&
+						input[tbcX][tbcY] == char {
+						if sidesMap[getSidesMapKey(tbcX, tbcY, dx, dy)] {
+							shouldAddSide = false
+						}
+						if input[tbcX+dx][tbcY+dy] == char {
+							break
+						}
+					} else {
+						break
 					}
 				}
 
@@ -74,18 +98,99 @@ func DFS2(visitedMap, sidesMap map[string]bool, input [][]rune, i, j int, area, 
 				}
 			}
 			if dy == 0 {
-				topAndBottomElemCoords := [][]int{
-					{i, j - 1}, {i, j + 1},
-				}
-
 				shouldAddSide := true
-				for _, tbc := range topAndBottomElemCoords {
-					if utils.IsCoordinatesValid(tbc[0], tbc[1], len(input), len(input[i])) &&
-						input[tbc[0]][tbc[1]] == char && sidesMap[getSidesMapKey(tbc[0], tbc[1], dx, dy)] {
-						shouldAddSide = false
+				tbcX, tbcY := i, j
+				for {
+					tbcY = tbcY - 1
+					if utils.IsCoordinatesValid(tbcX, tbcY, len(input), len(input[i])) &&
+						input[tbcX][tbcY] == char {
+						if sidesMap[getSidesMapKey(tbcX, tbcY, dx, dy)] {
+							shouldAddSide = false
+						}
+					} else {
+						break
 					}
 				}
 
+				tbcX, tbcY = i, j
+				for {
+					tbcY = tbcY + 1
+					if utils.IsCoordinatesValid(tbcX, tbcY, len(input), len(input[i])) &&
+						input[tbcX][tbcY] == char {
+						if sidesMap[getSidesMapKey(tbcX, tbcY, dx, dy)] {
+							shouldAddSide = false
+						}
+					} else {
+						break
+					}
+				}
+				if shouldAddSide {
+					fmt.Println(char, i, j, dx, dy)
+					*side++
+				}
+			}
+		} else {
+			sidesMap[getSidesMapKey(i, j, dx, dy)] = true
+			if dx == 0 {
+				shouldAddSide := true
+				tbcX, tbcY := i, j
+				for {
+					tbcX = tbcX - 1
+					if utils.IsCoordinatesValid(tbcX, tbcY, len(input), len(input[i])) &&
+						input[tbcX][tbcY] == char {
+						if sidesMap[getSidesMapKey(tbcX, tbcY, dx, dy)] {
+							shouldAddSide = false
+						}
+					} else {
+						break
+					}
+				}
+
+				tbcX, tbcY = i, j
+				for {
+					tbcX = tbcX + 1
+					if utils.IsCoordinatesValid(tbcX, tbcY, len(input), len(input[i])) &&
+						input[tbcX][tbcY] == char {
+						if sidesMap[getSidesMapKey(tbcX, tbcY, dx, dy)] {
+							shouldAddSide = false
+						}
+					} else {
+						break
+					}
+				}
+
+				if shouldAddSide {
+					fmt.Println(char, i, j, dx, dy)
+					*side++
+				}
+			}
+			if dy == 0 {
+				shouldAddSide := true
+				tbcX, tbcY := i, j
+				for {
+					tbcY = tbcY - 1
+					if utils.IsCoordinatesValid(tbcX, tbcY, len(input), len(input[i])) &&
+						input[tbcX][tbcY] == char {
+						if sidesMap[getSidesMapKey(tbcX, tbcY, dx, dy)] {
+							shouldAddSide = false
+						}
+					} else {
+						break
+					}
+				}
+
+				tbcX, tbcY = i, j
+				for {
+					tbcY = tbcY + 1
+					if utils.IsCoordinatesValid(tbcX, tbcY, len(input), len(input[i])) &&
+						input[tbcX][tbcY] == char {
+						if sidesMap[getSidesMapKey(tbcX, tbcY, dx, dy)] {
+							shouldAddSide = false
+						}
+					} else {
+						break
+					}
+				}
 				if shouldAddSide {
 					fmt.Println(char, i, j, dx, dy)
 					*side++
