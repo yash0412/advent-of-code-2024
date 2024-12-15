@@ -39,6 +39,45 @@ func Solve2() {
 	log.Println("Total sides: ", len(sidesMap))
 }
 
+func printSides(input [][]rune, sidesMap map[string]bool) {
+	for i := range input {
+		topLine := ""
+		bottomLine := ""
+		characters := ""
+		for j := range input[i] {
+			possibleCoords := [][]int{
+				{i, j - 1}, {i - 1, j}, {i, j + 1}, {i + 1, j},
+			}
+			for _, coords := range possibleCoords {
+				x, y := coords[0], coords[1]
+				dx, dy := x-i, y-j
+				char := input[i][j]
+
+				if sidesMap[getSidesMapKey(i, j, dx, dy)] {
+					if dx == -1 {
+						topLine += "-"
+					}
+					if dx == 1 {
+						bottomLine += "-"
+					}
+					if dy == -1 {
+						characters += "|" + string(char)
+					}
+					if dy == 1 {
+						characters += string(char) + "|"
+					}
+				} else {
+
+				}
+
+			}
+		}
+		fmt.Println(topLine)
+		// fmt.Println(string(characters))
+		fmt.Println(bottomLine)
+	}
+}
+
 func DFS2(visitedMap, sidesMap map[string]bool, input [][]rune, i, j int, area, side *int) {
 	if visitedMap[utils.CoordsToString(i, j)] {
 		return
@@ -93,7 +132,7 @@ func DFS2(visitedMap, sidesMap map[string]bool, input [][]rune, i, j int, area, 
 				}
 
 				if shouldAddSide {
-					fmt.Println(char, i, j, dx, dy)
+					// fmt.Println(string(char), i, j, dx, dy)
 					*side++
 				}
 			}
@@ -106,6 +145,9 @@ func DFS2(visitedMap, sidesMap map[string]bool, input [][]rune, i, j int, area, 
 						input[tbcX][tbcY] == char {
 						if sidesMap[getSidesMapKey(tbcX, tbcY, dx, dy)] {
 							shouldAddSide = false
+						}
+						if input[tbcX+dx][tbcY+dy] == char {
+							break
 						}
 					} else {
 						break
@@ -120,12 +162,15 @@ func DFS2(visitedMap, sidesMap map[string]bool, input [][]rune, i, j int, area, 
 						if sidesMap[getSidesMapKey(tbcX, tbcY, dx, dy)] {
 							shouldAddSide = false
 						}
+						if input[tbcX+dx][tbcY+dy] == char {
+							break
+						}
 					} else {
 						break
 					}
 				}
 				if shouldAddSide {
-					fmt.Println(char, i, j, dx, dy)
+					// fmt.Println(string(char), i, j, dx, dy)
 					*side++
 				}
 			}
@@ -160,7 +205,7 @@ func DFS2(visitedMap, sidesMap map[string]bool, input [][]rune, i, j int, area, 
 				}
 
 				if shouldAddSide {
-					fmt.Println(char, i, j, dx, dy)
+					// fmt.Println(string(char), i, j, dx, dy)
 					*side++
 				}
 			}
@@ -192,7 +237,7 @@ func DFS2(visitedMap, sidesMap map[string]bool, input [][]rune, i, j int, area, 
 					}
 				}
 				if shouldAddSide {
-					fmt.Println(char, i, j, dx, dy)
+					// fmt.Println(string(char), i, j, dx, dy)
 					*side++
 				}
 			}
