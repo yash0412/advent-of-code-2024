@@ -16,23 +16,23 @@ func Solve() {
 		for j := range input[i] {
 			area := 0
 			perimeter := 0
-			BFS(visitedMap, input, i, j, &area, &perimeter)
+			DFS(visitedMap, input, i, j, &area, &perimeter)
 			areas = append(areas, area)
 			perimeters = append(perimeters, perimeter)
 		}
 	}
 
 	totalCost := 0
-
+	perimeterSum := 0
 	for i := range areas {
 		totalCost += areas[i] * perimeters[i]
+		perimeterSum += perimeters[i]
 	}
 
-	log.Println("Total fence cost: ", totalCost)
+	log.Println("Total fence cost: ", totalCost, perimeterSum)
 }
 
-func BFS(visitedMap map[string]bool, input [][]rune, i, j int, area, perimeter *int) {
-	char := input[i][j]
+func DFS(visitedMap map[string]bool, input [][]rune, i, j int, area, perimeter *int) {
 	if visitedMap[utils.CoordsToString(i, j)] {
 		return
 	}
@@ -58,8 +58,9 @@ func BFS(visitedMap map[string]bool, input [][]rune, i, j int, area, perimeter *
 	for _, coords := range possibleCoords {
 		x, y := coords[0], coords[1]
 		if utils.IsCoordinatesValid(x, y, len(input), len(input[i])) {
+			char := input[i][j]
 			if input[x][y] == char {
-				BFS(visitedMap, input, x, y, area, perimeter)
+				DFS(visitedMap, input, x, y, area, perimeter)
 			} else {
 				*perimeter++
 			}
