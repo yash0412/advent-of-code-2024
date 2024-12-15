@@ -28,4 +28,5 @@ func main() {
 	// dayeleven.Solve()
 	// dayeleven.Solve2()
 	dayten.Solve()
+	dayten.Solve2()
 }
