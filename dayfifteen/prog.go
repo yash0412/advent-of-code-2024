@@ -114,7 +114,37 @@ func getNextCoordsInDirection(x, y, dx, dy int) (int, int) {
 	return x + dx, y + dy
 }
 
-func printLayout(layout [][]rune, move rune) {
+func clearOutputFile(layout [][]rune, robotPos [2]int) {
+	if err := os.Truncate("./dayfifteen/output.txt", 0); err != nil {
+		log.Fatalf("Failed to truncate: %v", err)
+	}
+
+	// layoutStr := ""
+	// for i := range layout {
+	// 	for j := range layout[i] {
+	// 		char := layout[i][j]
+	// 		layoutStr += (string(char))
+	// 	}
+	// 	layoutStr += ("\n")
+	// }
+
+	// layoutStr = fmt.Sprintf("Robot Pos: %v\n%s", robotPos, layoutStr)
+	// layoutStr = "Initial POS: " + "\n" + layoutStr
+	// layoutStr += "\n\n"
+
+	// f, err := os.OpenFile("./dayfifteen/output.txt", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// defer f.Close()
+
+	// if _, err = f.WriteString(layoutStr); err != nil {
+	// 	panic(err)
+	// }
+}
+
+func printLayout(layout [][]rune, robotPos [2]int, move rune) {
 	layoutStr := ""
 	for i := range layout {
 		for j := range layout[i] {
@@ -123,8 +153,21 @@ func printLayout(layout [][]rune, move rune) {
 		}
 		layoutStr += ("\n")
 	}
-	fmt.Println("Move made: ", string(move))
-	fmt.Println(layoutStr)
+
+	layoutStr = fmt.Sprintf("Robot Pos: %v\n%s", robotPos, layoutStr)
+	layoutStr = "Move made: " + string(move) + "\n" + layoutStr
+	layoutStr += "\n\n"
+
+	f, err := os.OpenFile("./dayfifteen/output.txt", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+	if err != nil {
+		panic(err)
+	}
+
+	defer f.Close()
+
+	if _, err = f.WriteString(layoutStr); err != nil {
+		panic(err)
+	}
 }
 
 func readInputFile(fileName string) ([][]rune, string) {
