@@ -1,6 +1,6 @@
 package main
 
-import "adventofcode/dayeleven"
+import "adventofcode/dayten"
 
 func main() {
 	// dayone.Solve()
@@ -25,6 +25,7 @@ func main() {
 	// daytwelve.Solve2()
 	// dayfifteen.Solve()
 	// dayfifteen.Solve2()
-	dayeleven.Solve()
-	dayeleven.Solve2()
+	// dayeleven.Solve()
+	// dayeleven.Solve2()
+	dayten.Solve()
 }
