@@ -34,3 +34,11 @@ func IsCoordinatesValid(x, y, xsize, ysize int) bool {
 	}
 	return y >= 0 && y < ysize
 }
+
+func IntArrayToString(input []int, sep string) string {
+	res := ""
+	for i := range input {
+		res += strconv.Itoa(input[i]) + sep
+	}
+	return res
+}
