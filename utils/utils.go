@@ -42,3 +42,11 @@ func IntArrayToString(input []int, sep string) string {
 	}
 	return res
 }
+
+func Int64ArrayToString(input []int64, sep string) string {
+	res := ""
+	for i := range input {
+		res += strconv.Itoa(int(input[i])) + sep
+	}
+	return res
+}

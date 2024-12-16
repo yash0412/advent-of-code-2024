@@ -11,41 +11,44 @@ func Solve() {
 	inputString := readInputFile("./daynine/input.txt")
 	newInput := defragmentDisk(createDiskMap(inputString))
 	log.Println("Checksum: ", calculateChecksum(newInput))
-	clearOutputFile()
-	printLayout(newInput)
+	clearOutputFile("output.txt")
+	printLayout("output.txt", newInput)
 }
 
-func clearOutputFile() {
-	if err := os.Truncate("./daynine/output.txt", 0); err != nil {
+func clearOutputFile(fileName string) {
+	if err := os.Truncate("./daynine/"+fileName, 0); err != nil {
 		log.Printf("Failed to truncate: %v", err)
 	}
 }
 
-func printLayout(input []int) {
-	f, err := os.OpenFile("./daynine/output.txt", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+func printLayout(fileName string, input []int64) {
+	f, err := os.OpenFile("./daynine/"+fileName, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 	if err != nil {
 		panic(err)
 	}
 
 	defer f.Close()
 
-	if _, err = f.WriteString(utils.IntArrayToString(input, "")); err != nil {
+	if _, err = f.WriteString(utils.Int64ArrayToString((input), "|")); err != nil {
+		panic(err)
+	}
+	if _, err = f.WriteString("\n"); err != nil {
 		panic(err)
 	}
 }
 
-func calculateChecksum(input []int) int {
-	checksum := 0
+func calculateChecksum(input []int64) int64 {
+	checksum := int64(0)
 	for i, v := range input {
 		if v == -1 {
 			continue
 		}
-		checksum += i * v
+		checksum += int64(int64(i) * v)
 	}
 	return checksum
 }
 
-func defragmentDisk(input []int) []int {
+func defragmentDisk(input []int64) []int64 {
 	firstElement, lastElement := 0, len(input)-1
 	for {
 		if firstElement > lastElement {
@@ -73,9 +76,9 @@ func defragmentDisk(input []int) []int {
 	return input
 }
 
-func createDiskMap(input string) []int {
-	fileId := 0
-	diskMap := make([]int, 0)
+func createDiskMap(input string) []int64 {
+	fileId := int64(0)
+	diskMap := make([]int64, 0)
 	for i := range input {
 		char := string(input[i])
 		charNum := utils.StringToInt(char)
