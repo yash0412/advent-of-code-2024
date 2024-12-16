@@ -4,9 +4,15 @@ import (
 	"adventofcode/models"
 	"adventofcode/utils"
 	"bufio"
+	"fmt"
 	"log"
 	"os"
 )
+
+type QueueElement struct {
+	Reindeer Reindeer
+	Cost     int
+}
 
 type Reindeer struct {
 	Position  models.Coords
@@ -79,7 +85,6 @@ func Solve() {
 	currentPOS := Reindeer{}
 	wallPOSMap := make(map[string]bool)
 	endPOS := [2]int{}
-	visitedMap := make(map[string]bool)
 	for i := range maze {
 		for j := range maze[i] {
 			char := maze[i][j]
@@ -95,10 +100,63 @@ func Solve() {
 			}
 		}
 	}
-	solved, cost := solveMaze(wallPOSMap, visitedMap, currentPOS, endPOS)
-	if solved {
-		log.Println("Min Cost:", cost)
+	cost := solveMazeWithBFS(wallPOSMap, currentPOS, endPOS)
+	log.Println("Min Cost:", cost)
+}
+
+func solveMazeWithBFS(wallPOSMap map[string]bool, currentPOS Reindeer, endPOS [2]int) int {
+	visitedMap := make(map[string]bool)
+	queue := make([]QueueElement, 0)
+	queue = append(queue, QueueElement{Reindeer: currentPOS, Cost: 0})
+	visitedMap[getSidesMapKey(currentPOS.Position.X, currentPOS.Position.Y, currentPOS.Direction.X, currentPOS.Direction.Y)] = true
+	lowestCost := -1
+	for len(queue) > 0 {
+		currentElement := queue[0]
+		queue = queue[1:]
+		currentPOS = currentElement.Reindeer
+		if currentPOS.isAtPOS(endPOS) {
+			return currentElement.Cost
+		}
+
+		possibleSides := [][]int{
+			{0, -1}, {-1, 0}, {0, 1}, {1, 0},
+		}
+		for sideIndex := range possibleSides {
+			side := possibleSides[sideIndex]
+			newPos := currentPOS.moveReindeer(side[0], side[1])
+			if newPos.isOnAWall(wallPOSMap) || visitedMap[getSidesMapKey(newPos.Position.X, newPos.Position.Y, newPos.Direction.X, newPos.Direction.Y)] {
+				continue
+			}
+			visitedMap[getSidesMapKey(currentPOS.Position.X, currentPOS.Position.Y, currentPOS.Direction.X, currentPOS.Direction.Y)] = true
+			moveCost := currentPOS.calculateMoveCost(newPos)
+			if moveCost >= 2000 {
+				continue
+			}
+			queue = append(queue, QueueElement{Reindeer: newPos, Cost: currentElement.Cost + moveCost})
+		}
+		queue = sortQueueElements(queue)
 	}
+	return lowestCost
+}
+
+func getSidesMapKey(x, y, dx, dy int) string {
+	return fmt.Sprintf("%s-%s", utils.CoordsToString(x, y), utils.CoordsToString(dx, dy))
+}
+
+func sortQueueElements(queue []QueueElement) []QueueElement {
+	// use bubble sort
+	sorted := false
+	for !sorted {
+		sorted = true
+		for i := 0; i < len(queue)-1; i++ {
+			if queue[i].Cost > queue[i+1].Cost {
+				queue[i], queue[i+1] = queue[i+1], queue[i]
+				sorted = false
+
+			}
+		}
+	}
+	return queue
 }
 
 func solveMaze(wallPOSMap, visitedMap map[string]bool, currentPOS Reindeer, endPOS [2]int) (bool, int) {
