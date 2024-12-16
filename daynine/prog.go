@@ -11,8 +11,8 @@ func Solve() {
 	inputString := readInputFile("./daynine/input.txt")
 	newInput := defragmentDisk(createDiskMap(inputString))
 	log.Println("Checksum: ", calculateChecksum(newInput))
-	clearOutputFile("output.txt")
-	printLayout("output.txt", newInput)
+	// clearOutputFile("output.txt")
+	// printLayout("output.txt", newInput)
 }
 
 func clearOutputFile(fileName string) {
@@ -52,7 +52,6 @@ func defragmentDisk(input []int64) []int64 {
 	firstElement, lastElement := 0, len(input)-1
 	for {
 		if firstElement > lastElement {
-			log.Println(firstElement, lastElement)
 			break
 		}
 		for {
@@ -68,7 +67,6 @@ func defragmentDisk(input []int64) []int64 {
 			lastElement--
 		}
 		if firstElement > lastElement {
-			log.Println(firstElement, lastElement)
 			break
 		}
 		input[firstElement], input[lastElement] = input[lastElement], input[firstElement]
