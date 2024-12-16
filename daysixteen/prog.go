@@ -159,43 +159,6 @@ func sortQueueElements(queue []QueueElement) []QueueElement {
 	return queue
 }
 
-func solveMaze(wallPOSMap, visitedMap map[string]bool, currentPOS Reindeer, endPOS [2]int) (bool, int) {
-	if currentPOS.isAtPOS(endPOS) {
-		return true, 0
-	}
-	visitedMap[utils.CoordsToString(currentPOS.Position.X, currentPOS.Position.Y)] = true
-	possibleSides := [][]int{
-		{0, -1}, {-1, 0}, {0, 1}, {1, 0},
-	}
-	minCost := 0
-	solved := false
-	for sideIndex := range possibleSides {
-		side := possibleSides[sideIndex]
-		newPos := currentPOS.moveReindeer(side[0], side[1])
-		if newPos.isOnAWall(wallPOSMap) || visitedMap[utils.CoordsToString(newPos.Position.X, newPos.Position.Y)] {
-			continue
-		}
-		moveCost := currentPOS.calculateMoveCost(newPos)
-		branchSolved, cost := solveMaze(wallPOSMap, (visitedMap), newPos, endPOS)
-		if branchSolved {
-			solved = true
-			if minCost == 0 || cost+moveCost < minCost {
-				minCost = cost + moveCost
-			}
-		}
-	}
-	visitedMap[utils.CoordsToString(currentPOS.Position.X, currentPOS.Position.Y)] = false
-	return solved, minCost
-}
-
-func copyVisitedMap(visitedMap map[string]bool) map[string]bool {
-	newMap := make(map[string]bool)
-	for key, value := range visitedMap {
-		newMap[key] = value
-	}
-	return newMap
-}
-
 func readInputFile(fileName string) [][]rune {
 	inp, err := os.Open(fileName)
 	if err != nil {
