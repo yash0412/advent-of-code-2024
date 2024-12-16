@@ -4,12 +4,9 @@ import (
 	"adventofcode/models"
 	"adventofcode/utils"
 	"bufio"
-	"fmt"
 	"log"
 	"os"
 )
-
-var counter = 0
 
 type Reindeer struct {
 	Position  models.Coords
@@ -108,27 +105,20 @@ func solveMaze(wallPOSMap, visitedMap map[string]bool, currentPOS Reindeer, endP
 	if currentPOS.isAtPOS(endPOS) {
 		return true, 0
 	}
-	if currentPOS.isOnAWall(wallPOSMap) {
-		return false, 0
-	}
-	if visitedMap[utils.CoordsToString(currentPOS.Position.X, currentPOS.Position.Y)] {
-		return false, 0
-	}
 	visitedMap[utils.CoordsToString(currentPOS.Position.X, currentPOS.Position.Y)] = true
-	counter++
 	possibleSides := [][]int{
 		{0, -1}, {-1, 0}, {0, 1}, {1, 0},
-	}
-	if counter%10000 == 0 {
-		fmt.Println("Counter:", counter, "Current POS:", currentPOS.Position)
 	}
 	minCost := 0
 	solved := false
 	for sideIndex := range possibleSides {
 		side := possibleSides[sideIndex]
 		newPos := currentPOS.moveReindeer(side[0], side[1])
+		if newPos.isOnAWall(wallPOSMap) || visitedMap[utils.CoordsToString(newPos.Position.X, newPos.Position.Y)] {
+			continue
+		}
 		moveCost := currentPOS.calculateMoveCost(newPos)
-		branchSolved, cost := solveMaze(wallPOSMap, copyVisitedMap(visitedMap), newPos, endPOS)
+		branchSolved, cost := solveMaze(wallPOSMap, (visitedMap), newPos, endPOS)
 		if branchSolved {
 			solved = true
 			if minCost == 0 || cost+moveCost < minCost {
@@ -136,7 +126,7 @@ func solveMaze(wallPOSMap, visitedMap map[string]bool, currentPOS Reindeer, endP
 			}
 		}
 	}
-
+	visitedMap[utils.CoordsToString(currentPOS.Position.X, currentPOS.Position.Y)] = false
 	return solved, minCost
 }
 
