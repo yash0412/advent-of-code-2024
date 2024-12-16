@@ -1,6 +1,7 @@
 package dayfourteen
 
 import (
+	"adventofcode/models"
 	"adventofcode/utils"
 	"bufio"
 	"fmt"
@@ -16,14 +17,9 @@ const (
 	MinNumberOfSeconds = 10000
 )
 
-type Coords struct {
-	X int
-	Y int
-}
-
 type Robot struct {
-	Position Coords
-	Velocity Coords
+	Position models.Coords
+	Velocity models.Coords
 }
 
 func (robot *Robot) MoveRobot() {
@@ -40,7 +36,7 @@ func (robot *Robot) MoveRobot() {
 	if newY >= Length {
 		newY = newY - Length
 	}
-	newCoords := Coords{X: newX, Y: newY}
+	newCoords := models.Coords{X: newX, Y: newY}
 	robot.Position = newCoords
 }
 
@@ -86,7 +82,7 @@ func Solve2() {
 	}
 
 	for i := 0; i < MinNumberOfSeconds; i++ {
-		robotPosMap := make(map[Coords]bool)
+		robotPosMap := make(map[models.Coords]bool)
 		for index := range robots {
 			robots[index].MoveRobot()
 			robotPosMap[robots[index].Position] = true
@@ -96,11 +92,11 @@ func Solve2() {
 
 }
 
-func generateOutputFile(robotPosMap map[Coords]bool, iteration int) {
+func generateOutputFile(robotPosMap map[models.Coords]bool, iteration int) {
 	outputStr := ""
 	for i := 0; i < Width; i++ {
 		for j := 0; j < Length; j++ {
-			if robotPosMap[Coords{X: i, Y: j}] {
+			if robotPosMap[models.Coords{X: i, Y: j}] {
 				outputStr += "1"
 			} else {
 				outputStr += "."
@@ -113,7 +109,7 @@ func generateOutputFile(robotPosMap map[Coords]bool, iteration int) {
 	}
 }
 
-func getQuadrantIndexForCoord(coords Coords) int {
+func getQuadrantIndexForCoord(coords models.Coords) int {
 	midX := Width / 2
 	midY := Length / 2
 	if coords.X < midX {

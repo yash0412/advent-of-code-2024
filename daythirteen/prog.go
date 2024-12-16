@@ -1,6 +1,7 @@
 package daythirteen
 
 import (
+	"adventofcode/models"
 	"adventofcode/utils"
 	"bufio"
 	"log"
@@ -8,15 +9,10 @@ import (
 	"strings"
 )
 
-type Coords struct {
-	X int
-	Y int
-}
-
 type Machine struct {
-	A     Coords
-	B     Coords
-	Prize Coords
+	A     models.Coords
+	B     models.Coords
+	Prize models.Coords
 }
 
 func Solve() {
