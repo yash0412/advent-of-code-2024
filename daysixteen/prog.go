@@ -100,11 +100,11 @@ func Solve() {
 			}
 		}
 	}
-	cost := solveMazeWithBFS(wallPOSMap, currentPOS, endPOS)
+	cost, _ := solveMazeWithBFS(wallPOSMap, currentPOS, endPOS)
 	log.Println("Min Cost:", cost)
 }
 
-func solveMazeWithBFS(wallPOSMap map[string]bool, currentPOS Reindeer, endPOS [2]int) int {
+func solveMazeWithBFS(wallPOSMap map[string]bool, currentPOS Reindeer, endPOS [2]int) (int, Reindeer) {
 	visitedMap := make(map[string]bool)
 	queue := make([]QueueElement, 0)
 	queue = append(queue, QueueElement{Reindeer: currentPOS, Cost: 0})
@@ -115,7 +115,7 @@ func solveMazeWithBFS(wallPOSMap map[string]bool, currentPOS Reindeer, endPOS [2
 		queue = queue[1:]
 		currentPOS = currentElement.Reindeer
 		if currentPOS.isAtPOS(endPOS) {
-			return currentElement.Cost
+			return currentElement.Cost, currentPOS
 		}
 
 		possibleSides := [][]int{
@@ -136,7 +136,7 @@ func solveMazeWithBFS(wallPOSMap map[string]bool, currentPOS Reindeer, endPOS [2
 		}
 		queue = sortQueueElements(queue)
 	}
-	return lowestCost
+	return lowestCost, currentPOS
 }
 
 func getSidesMapKey(x, y, dx, dy int) string {
