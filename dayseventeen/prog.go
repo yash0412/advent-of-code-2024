@@ -96,7 +96,9 @@ func processInstructions(registers Registers, instructions []int) []int {
 			registers.B = registers.B ^ registers.C
 		case 5:
 			output = append(output, operandValue%8)
+			fmt.Println("Output", output[len(output)-1])
 		}
+		fmt.Println(i, registers)
 		i += 2
 	}
 	return output
