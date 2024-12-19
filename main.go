@@ -1,7 +1,7 @@
 package main
 
 import (
-	"adventofcode/dayeighteen"
+	"adventofcode/daynineteen"
 	"fmt"
 	"time"
 )
@@ -34,6 +34,6 @@ func main() {
 	// dayten.Solve()
 	// dayten.Solve2()
 	startTime := time.Now()
-	dayeighteen.Solve2()
+	daynineteen.Solve()
 	fmt.Println(time.Since(startTime))
 }
