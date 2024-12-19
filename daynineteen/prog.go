@@ -5,15 +5,11 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"slices"
 	"strings"
 )
 
 func Solve() {
 	availableTowels, expectedDesigns := readInputFile("./daynineteen/input.txt")
-	slices.SortStableFunc(availableTowels, func(a string, b string) int {
-		return len(b) - len(a)
-	})
 	availableTowelsMap := make(map[string]bool)
 	savedSubstrMap := make(map[string]bool)
 	for _, availableTowel := range availableTowels {
