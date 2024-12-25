@@ -34,6 +34,6 @@ func main() {
 	// dayten.Solve()
 	// dayten.Solve2()
 	startTime := time.Now()
-	daytwentythree.Solve()
+	daytwentythree.Solve2()
 	fmt.Println(time.Since(startTime))
 }

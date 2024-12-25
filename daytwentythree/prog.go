@@ -31,7 +31,7 @@ func Solve() {
 	fmt.Println("Count:", santaCount)
 }
 
-func findPathWithCost3(networkMap map[string]map[string]struct{}, startingComp string, foundNetworks map[string]bool) {
+func findPathWithCost3(networkMap map[string]map[string]bool, startingComp string, foundNetworks map[string]bool) {
 	queue := []QueueElement{{Comp: startingComp, Cost: 0, ParentComp: nil}}
 	for len(queue) > 0 {
 		currentComp := queue[0]
@@ -66,25 +66,25 @@ func findAllCompsInPath(currentComp QueueElement) string {
 	return utils.StringArrayToString(compStr, ",")
 }
 
-func readInputFile(fileName string) map[string]map[string]struct{} {
+func readInputFile(fileName string) map[string]map[string]bool {
 	inp, err := os.Open(fileName)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer inp.Close()
 	scanner := bufio.NewScanner(inp)
-	input := make(map[string]map[string]struct{})
+	input := make(map[string]map[string]bool)
 	for scanner.Scan() {
 		line := scanner.Text()
 		comps := strings.Split(line, "-")
 		if _, ok := input[comps[0]]; !ok {
-			input[comps[0]] = make(map[string]struct{})
+			input[comps[0]] = make(map[string]bool)
 		}
 		if _, ok := input[comps[1]]; !ok {
-			input[comps[1]] = make(map[string]struct{})
+			input[comps[1]] = make(map[string]bool)
 		}
-		input[comps[0]][comps[1]] = struct{}{}
-		input[comps[1]][comps[0]] = struct{}{}
+		input[comps[0]][comps[1]] = true
+		input[comps[1]][comps[0]] = true
 	}
 	return input
 }
