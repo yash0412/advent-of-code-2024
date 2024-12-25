@@ -58,3 +58,15 @@ func Int64ArrayToString(input []int64, sep string) string {
 	}
 	return res
 }
+
+func StringArrayToString(input []string, sep string) string {
+	res := ""
+	for i := range input {
+		if i == len(input)-1 {
+			res += input[i]
+			continue
+		}
+		res += input[i] + sep
+	}
+	return res
+}
