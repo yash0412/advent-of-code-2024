@@ -38,6 +38,10 @@ func IsCoordinatesValid(x, y, xsize, ysize int) bool {
 func IntArrayToString(input []int, sep string) string {
 	res := ""
 	for i := range input {
+		if i == len(input)-1 {
+			res += strconv.Itoa(input[i])
+			continue
+		}
 		res += strconv.Itoa(input[i]) + sep
 	}
 	return res
@@ -46,6 +50,10 @@ func IntArrayToString(input []int, sep string) string {
 func Int64ArrayToString(input []int64, sep string) string {
 	res := ""
 	for i := range input {
+		if i == len(input)-1 {
+			res += strconv.Itoa(int(input[i]))
+			continue
+		}
 		res += strconv.Itoa(int(input[i])) + sep
 	}
 	return res
